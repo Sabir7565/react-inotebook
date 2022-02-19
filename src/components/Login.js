@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
     let navigate = useNavigate();
     
     const handleSubmit = async (e) => {
@@ -17,15 +17,17 @@ const Login = () => {
         const response = await ajax.json();
         if(response.success === true){
             localStorage.setItem('token', response.authtoken);
+            props.alert('Logged in successfully', 'success');
             navigate('/');
+            
         }else{
-            alert(response.msg);
+            props.alert(response.msg, 'danger');
         }
-        console.log(response);
     }
     
     return (
         <div className='container my-5 w-50'>
+            <h3 className='text-center my-5'>Login iNotebook</h3>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email address</label>

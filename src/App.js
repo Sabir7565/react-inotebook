@@ -9,22 +9,34 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
 import NoteState from './context/notes/NoteState';
-import { Alert } from "./components/Alert";
+import Alert from "./components/Alert";
 import Login from './components/Login';
 import Signup from './components/Signup';
+import { useState } from 'react';
 
 function App() {
+  const [alert, setalert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setalert({
+      msg: message,
+      type: type
+    })
+    setTimeout(() => {
+      setalert(null);
+    }, 3000);
+  }
   return (
     <>
       <NoteState>
         <Router>
           <Navbar />
-          {/* <Alert message="Hello world" /> */}
+          <Alert alert={alert} />
           <div className="">
             <Routes>
-              <Route exact path="/login" element={<Login />} />
-              <Route exact path="/signup" element={<Signup />} />
-              <Route exact path="/" element={<Home />} />
+              <Route exact path="/login" element={<Login alert={showAlert} />} />
+              <Route exact path="/signup" element={<Signup alert={showAlert} />} />
+              <Route exact path="/" element={<Home alert={showAlert} />} />
               <Route exact path="/about" element={<About />} />
             </Routes>
           </div>
